@@ -19,5 +19,30 @@ cursor.execute("SELECT shop.city, SUM(sale.quantity) AS total_quantity FROM sale
 sales_per_region = cursor.fetchall()
 print("Vente par ville:", sales_per_region)
 
+
+# Pour la table sale_by_product
+for product_id, quantity in sales_per_product:
+    cursor.execute("SELECT * FROM sale_by_product WHERE ref_product_id = ?;", (product_id,))
+    existing_entry = cursor.fetchone()
+    if existing_entry is None:
+        cursor.execute("INSERT INTO sale_by_product (ref_product_id, quantity) VALUES (?, ?);", (product_id, quantity))
+        conn.commit()
+
+# Pour la table sale_by_town
+for town, quantity in sales_per_region:
+    cursor.execute("SELECT * FROM sale_by_town WHERE town = ?;", (town,))
+    existing_entry = cursor.fetchone()
+    if existing_entry is None:
+        cursor.execute("INSERT INTO sale_by_town (town, quantity) VALUES (?, ?);", (town, quantity))
+        conn.commit()
+
+# Pour la table sales_analytics
+cursor.execute("SELECT * FROM sales_analytics;")
+existing_entry = cursor.fetchone()
+if existing_entry is None:
+    cursor.execute("INSERT INTO sales_analytics (sale_revenue) VALUES (?);", (total_revenue,))
+    conn.commit()
+
+
 # Fermeture de la connexion à la base de données
 conn.close()
