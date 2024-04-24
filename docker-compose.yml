@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  script:
+    build: 
+      context: ./script_create_sql
+    depends_on:
+      - sqlite
+    volumes:
+      - db-data:/data    
+
+  sqlite:
+    image: nouchka/sqlite3
+    container_name: sqlite3_db
+    tty: true
+    stdin_open: true
+    volumes:
+      - db-data:/data  
+    ports:
+      - "1433:1433"       
+
+volumes:
+  db-data:
