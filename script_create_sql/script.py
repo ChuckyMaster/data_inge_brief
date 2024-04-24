@@ -36,7 +36,7 @@ queries = [
        );""",
     """CREATE TABLE IF NOT EXISTS sales_analytics(
            Id_sales_analytics INTEGER PRIMARY KEY AUTOINCREMENT,
-           sale_revenue DOUBLE
+           sale_revenue DECIMAL(15,2)
        );""",
     """CREATE TABLE IF NOT EXISTS sale(
            Id_shop INT,
