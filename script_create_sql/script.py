@@ -10,7 +10,7 @@ from io import StringIO
 conn = sqlite3.connect('/data/shop.db')
 cursor = conn.cursor()
 
-# Créer les tables si elles n'existent pas déjà
+# Créer les tables
 queries = [
     """CREATE TABLE IF NOT EXISTS shop(
            Id_shop INTEGER,
@@ -19,9 +19,9 @@ queries = [
        );""",
     """CREATE TABLE IF NOT EXISTS product(
            Id_product INTEGER PRIMARY KEY AUTOINCREMENT,
-           nom VARCHAR(50),
+           name VARCHAR(50),
            id_reference_product VARCHAR(50),
-           price DECIMAL(15,2),
+           price D  ECIMAL(15,2),
            stock INT
        );""",
     """CREATE TABLE IF NOT EXISTS sale_by_product(
@@ -67,6 +67,8 @@ def insert_data_from_url(url, table_name, column_names):
         csv_data = StringIO(response.text)
         # Lecture du fichier CSV en excluant la première ligne
         df_data = pd.read_csv(csv_data, encoding='utf-8', skiprows=1)
+
+        
         # Transformation du DataFrame en une liste de tuples
         data = [tuple(row) for row in df_data.itertuples(index=False)]
         
@@ -116,7 +118,7 @@ urls = {
 }
 
 table_columns = {
-    "product": ["nom", "id_reference_product", "price", "stock"],
+    "product": ["name", "id_reference_product", "price", "stock"],
     "shop": ["Id_shop","city", "employee_nb"],
     "sale": ["created_at","Id_product", "quantity","Id_shop"]
 }
